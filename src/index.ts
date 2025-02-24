@@ -31,11 +31,13 @@ export default class NexusProxyAuthPlugin
    * @param cb callback function
    */
   public authenticate(user: string, password: string, cb: AuthCallback): void {
+    this.logger.debug({ uri: this.uri }, "authenticating via @{uri}");
     fetch(`${this.uri}/service/rest/v1/status`, {
       headers: { Authorization: "Basic " + Buffer.from(user + ":" + password).toString("base64") },
     })
       .then((response) => {
         if (response.ok) {
+          cb(null, [user]);
         } else {
           this.logger.error({ name: user }, "error @{name}");
           cb(getInternalError("error, try again"), false);
