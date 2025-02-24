@@ -1,5 +1,5 @@
 import { Config } from '@verdaccio/types';
 
-export interface CustomConfig extends Config {
-  foo: string;
+export interface NexusAuthProxyConfig extends Config {
+  uri: string;
 }
