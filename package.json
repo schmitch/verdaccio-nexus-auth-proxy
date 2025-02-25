@@ -1,6 +1,6 @@
 {
   "name": "verdaccio-nexus-auth-proxy",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "proxies auth requests to nexus for compat",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
@@ -28,6 +28,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest .",
-    "lint": "eslint \"**/*.{js,ts}\""
+    "lint": "eslint \"**/*.{js,ts}\"",
+    "publish": "npm run build && npm publish --scope=@npmjs --access public"
   }
 }
