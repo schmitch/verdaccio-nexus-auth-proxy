@@ -29,6 +29,6 @@
     "build": "tsc",
     "test": "jest .",
     "lint": "eslint \"**/*.{js,ts}\"",
-    "publish": "npm run build && npm publish --scope=@npmjs --access public"
+    "publish-remote": "npm run build && npm publish --scope=@npmjs --access public"
   }
 }
