@@ -18,3 +18,5 @@ Once you have completed that, use the following npm tasks.
   Run unit test
 
 For more information about any of these commands run `npm run ${task} -- --help`.
+
+Trigger: 1
