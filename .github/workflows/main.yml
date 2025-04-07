@@ -1,0 +1,50 @@
+name: CI
+on:
+  schedule:
+    - cron: "0 10 * * *"
+  push:
+    tags:
+    - "v*.*.*"
+
+jobs:
+  push_dockerfile:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    name: 'push envisia verdaccio image'
+    steps:
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        # list of Docker images to use as base name for tags
+        images: |
+        #  name/app
+          ghcr.io/username/app
+        # generate Docker tags based on the following events/attributes
+        tags: |
+          type=schedule
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=sha
+
+    - name: Login to GHCR
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    #- name: Login to Docker Hub0
+    #  if: github.event_name != 'pull_request'
+    #  uses: docker/login-action@v3
+    #  with:
+    #    username: ${{ vars.DOCKERHUB_USERNAME }}
+    #    password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build and push Docker images
+      uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
+      with:
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
