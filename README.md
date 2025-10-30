@@ -19,4 +19,4 @@ Once you have completed that, use the following npm tasks.
 
 For more information about any of these commands run `npm run ${task} -- --help`.
 
-Trigger: 1
+Trigger: 2
