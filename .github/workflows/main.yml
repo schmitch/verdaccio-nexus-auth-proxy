@@ -7,10 +7,15 @@ on:
     - main
     tags:
     - "v*.*.*"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   push_dockerfile:
-    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     name: 'push envisia verdaccio image'
     steps:
@@ -48,7 +53,10 @@ jobs:
     - name: Build and push Docker images
       uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
       with:
-        push: true
+        # always pull the newest verdaccio/verdaccio base image
+        pull: true
+        push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
       env:
         SOURCE_DATE_EPOCH: 0
